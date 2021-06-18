@@ -22,7 +22,6 @@ func NewPersonInMemoryRepository() PersonRepository {
 func (*person) FindById(id string) (*entity.Person, error) {
 	if len(personInMemory) == 0 {
 		err := errors.New(entity.ERROR_PERSON_BASE_EMPTY)
-		log.Printf("Error: %v", err)
 		return &entity.Person{}, err
 	}
 
@@ -46,7 +45,7 @@ func (*person) FindById(id string) (*entity.Person, error) {
 func (*person) Add(person *entity.Person) (*entity.Person, error) {
 	err := person.IsValid()
 	if err != nil {
-		log.Printf("Failed to add a new person: %v", err)
+		log.Printf("Error: %v", err)
 		return &entity.Person{}, err
 	}
 

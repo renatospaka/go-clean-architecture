@@ -4,8 +4,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/renatospaka/go-clean-architecture/entity"
 	"github.com/stretchr/testify/require"
-	"github.com/renatospaka/clean-arch/entity"
 )
 
 func TestPerson_IsValid(t *testing.T) {

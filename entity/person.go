@@ -5,7 +5,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/renatospaka/clean-arch/framework/utils"
+	"github.com/renatospaka/go-clean-architecture/framework/utils"
 )
 
 type Person struct {
@@ -80,4 +80,3 @@ func (p *Person) IsValid() error {
 
 	return nil
 }
-
