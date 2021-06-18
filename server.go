@@ -3,38 +3,22 @@ package main
 import (
 	"fmt"
 	"log"
-	"time"
+	"net/http"
 
-	"github.com/renatospaka/clean-arch/application/repository"
-	"github.com/renatospaka/clean-arch/entity"
+	router "github.com/renatospaka/clean-arch/application/http"
 )
 
 var (
-	personRepo repository.PersonRepository = repository.NewPersonInMemoryRepository()
-
+	//personRepo repository.PersonRepository = repository.NewPersonInMemoryRepository()
+	httpRouter router.Router = router.NewMuxRouter()
 )
-func main() {
-	log.Println("EMR Server up & running")
 
-	person := entity.NewPerson()
-	person.Name = "Renato"
-	person.MiddleName = "Costa"
-	person.LastName = "Spakauskas"
-	person.DOB = time.Date(1970, 11, 14, 0, 0, 0, 0, time.UTC)
-	person.Email = "renato@email.com"
-	person.Responsible = entity.Self
-	
-	//add new person
-	p, err := personRepo.Add(&person)
-	if err != nil {
-		log.Fatalf("Error on add a new person: %v", err)
-	}
-	fmt.Println("NEW => ", p.ID, ", ", p.Name)
-	
-	//consult this new person
-	existingPerson, err := personRepo.FindById(p.ID)
-	if err != nil {
-		log.Fatalf("Error consulting an ID: %v", err)
-	}
-	fmt.Println("EXISTING => ", existingPerson.ID, ", ", existingPerson.Name, ", included on ", existingPerson.CreatedAt)
+func main() {
+	const port = ":8000"
+	httpRouter.GET("/", func(w http.ResponseWriter, r *http.Request) {
+		log.Printf("EMR Server running on port %s", port)
+		fmt.Fprintln(w, "EMR Server running on port ", port)
+	})
+
+	httpRouter.SERVE(port)
 }
