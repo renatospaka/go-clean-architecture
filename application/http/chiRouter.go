@@ -16,11 +16,11 @@ func NewChiRouter() Router {
 }
 
 func (*chiRouter) GET(uri string, f func(w http.ResponseWriter, r *http.Request)) {
-	chiDispatcher.HandleFunc(uri, f).Methods("GET")
+	chiDispatcher.Get(uri, f)
 }
 
 func (*chiRouter) POST(uri string, f func(w http.ResponseWriter, r *http.Request)) {
-	chiDispatcher.HandleFunc(uri, f).Methods("POST")
+	chiDispatcher.Post(uri, f)
 }
 
 func (*chiRouter) SERVE(port string) {
