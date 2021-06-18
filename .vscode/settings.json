@@ -1,0 +1,22 @@
+{
+  "workbench.colorCustomizations": {
+    "activityBar.activeBackground": "#de69a5",
+    "activityBar.activeBorder": "#416817",
+    "activityBar.background": "#de69a5",
+    "activityBar.foreground": "#15202b",
+    "activityBar.inactiveForeground": "#15202b99",
+    "activityBarBadge.background": "#416817",
+    "activityBarBadge.foreground": "#e7e7e7",
+    "statusBar.background": "#d53f8c",
+    "statusBar.foreground": "#e7e7e7",
+    "statusBarItem.hoverBackground": "#de69a5",
+    "titleBar.activeBackground": "#d53f8c",
+    "titleBar.activeForeground": "#e7e7e7",
+    "titleBar.inactiveBackground": "#d53f8c99",
+    "titleBar.inactiveForeground": "#e7e7e799"
+  },
+  "peacock.remoteColor": "#d53f8c",
+  "cSpell.words": [
+    "Spakauskas"
+  ]
+}
