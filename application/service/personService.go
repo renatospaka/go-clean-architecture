@@ -6,7 +6,7 @@ import (
 	"errors"
 
 	"github.com/renatospaka/go-clean-architecture/entity"
-	"github.com/renatospaka/go-clean-architecture/infrastrucure/repository"
+	"github.com/renatospaka/go-clean-architecture/infrastructure/repository"
 )
 
 type PersonService interface {
@@ -22,6 +22,8 @@ func NewPersonService() PersonService {
 	return &person{}
 }
 
+
+//Get one person identified by his/her ID
 func (*person) GetPerson(id string) (*entity.Person, error) {
 	thisGuy, err := repo.FindById(id)
 	if err != nil {
@@ -33,6 +35,8 @@ func (*person) GetPerson(id string) (*entity.Person, error) {
 	return thisGuy, nil
 }
 
+
+//add a new person who later can be a patient, a responsible for someone, a medic
 func (*person) AddPerson(person *entity.Person) (*entity.Person, error) {
 	thisGuy, err := repo.Add(person)
 	if err != nil {

@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 
-	router "github.com/renatospaka/clean-arch/application/http"
+	router "github.com/renatospaka/go-clean-architecture/application/http"
 )
 
 var (

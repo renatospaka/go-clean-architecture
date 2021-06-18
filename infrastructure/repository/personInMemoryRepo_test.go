@@ -4,9 +4,9 @@ import (
 	"testing"
 	"time"
 
+	"github.com/renatospaka/go-clean-architecture/entity"
+	"github.com/renatospaka/go-clean-architecture/infrastructure/repository"
 	"github.com/stretchr/testify/assert"
-	"github.com/renatospaka/clean-arch/entity"
-	"github.com/renatospaka/clean-arch/application/repository"
 )
 
 func TestAdd_IsValid(t *testing.T) {

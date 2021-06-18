@@ -1,6 +1,6 @@
 package repository
 
-import "github.com/renatospaka/clean-arch/entity"
+import "github.com/renatospaka/go-clean-architecture/entity"
 
 type PersonRepository interface {
 	FindById(id string) (*entity.Person, error)
@@ -8,3 +8,4 @@ type PersonRepository interface {
 	//Update(person *entity.Person) (*entity.Person, error)
 	//Remove(id string) (*entity.Person, error)
 }
+

@@ -5,7 +5,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/renatospaka/clean-arch/entity"
+	"github.com/renatospaka/go-clean-architecture/entity"
 	uuid "github.com/satori/go.uuid"
 )
 
@@ -22,6 +22,7 @@ func NewPersonInMemoryRepository() PersonRepository {
 func (*person) FindById(id string) (*entity.Person, error) {
 	if len(personInMemory) == 0 {
 		err := errors.New(entity.ERROR_PERSON_BASE_EMPTY)
+		log.Printf("person.findbyid.error: %v", err)
 		return &entity.Person{}, err
 	}
 
@@ -32,10 +33,10 @@ func (*person) FindById(id string) (*entity.Person, error) {
 			break
 		}
 	} 
-
+		
 	if thisGuy.ID == "" {
 		err := errors.New(entity.ERROR_PERSON_INVALID_ID)
-		log.Printf("Error: %v", err)
+		log.Printf("person.findbyid.error: %v", err)
 		return &entity.Person{}, err
 	}
 
@@ -45,7 +46,7 @@ func (*person) FindById(id string) (*entity.Person, error) {
 func (*person) Add(person *entity.Person) (*entity.Person, error) {
 	err := person.IsValid()
 	if err != nil {
-		log.Printf("Error: %v", err)
+		log.Printf("person.add.error: %v", err)
 		return &entity.Person{}, err
 	}
 
