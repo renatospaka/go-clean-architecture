@@ -8,4 +8,3 @@ type PersonRepository interface {
 	//Update(person *entity.Person) (*entity.Person, error)
 	//Remove(id string) (*entity.Person, error)
 }
-

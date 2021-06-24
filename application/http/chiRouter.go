@@ -27,3 +27,7 @@ func (*chiRouter) SERVE(port string) {
 	log.Printf("Chi http listening on port %s", port)
 	log.Println(http.ListenAndServe(port, chiDispatcher))
 }
+
+func (*chiRouter) GetParam(r *http.Request, param string) string {
+	panic("Not implemented yet")
+}

@@ -22,7 +22,7 @@ func main() {
 		fmt.Fprintln(w, "EMR Server running on port ", port)
 	})
 
-	httpRouter.GET("/person", personController.GetPerson)
+	httpRouter.GET("/person/{id}", personController.GetPerson)
 
 	httpRouter.SERVE(port)
 }
