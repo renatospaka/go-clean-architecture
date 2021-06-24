@@ -2,7 +2,6 @@ package repository
 
 import (
 	"errors"
-	"fmt"
 	"log"
 	"time"
 
@@ -16,31 +15,41 @@ var (
 	personInMemory []entity.Person
 )
 
-func init() {
-	thisPerson := entity.Person{
-		ID: "1",
-		Name: "Renato",
-		MiddleName: "Costa",
-		LastName: "Spakauskas",
-		DOB: time.Date(1970, 11, 14, 0, 0, 0, 0, time.UTC),
-		Gender: entity.GenderMale,
-		Email: "renato@email.com",
-	}
-	personInMemory = append(personInMemory, thisPerson)
+// func init() {
+// 	thisPerson := entity.Person{
+// 		ID: "1",
+// 		Name: "Renato",
+// 		MiddleName: "Costa",
+// 		LastName: "Spakauskas",
+// 		DOB: time.Date(1970, 11, 14, 0, 0, 0, 0, time.UTC),
+// 		Gender: entity.GenderMale,
+// 		Email: "renato@email.com",
+// 	}
+// 	personInMemory = append(personInMemory, thisPerson)
+// 	inJSON, err := json.Marshal(thisPerson)
+// 	if err != nil {
+// 		fmt.Print(err)
+// 	}
+// 	fmt.Println("JSON: ", string(inJSON))
 
-	thisPerson = entity.Person{
-		ID: "2",
-		Name: "Camila",
-		MiddleName: "Pinho",
-		LastName: "Spakauskas",
-		DOB: time.Date(1995, 2, 6, 0, 0, 0, 0, time.UTC),
-		Gender: entity.GenderFemale,
-		Email: "camila@email.com",
-	}
-	personInMemory = append(personInMemory, thisPerson)
-	
-	fmt.Println("personInMemory: ", len(personInMemory))
-}
+// 	thisPerson = entity.Person{
+// 		ID: "2",
+// 		Name: "Camila",
+// 		MiddleName: "Pinho",
+// 		LastName: "Spakauskas",
+// 		DOB: time.Date(1995, 2, 6, 0, 0, 0, 0, time.UTC),
+// 		Gender: entity.GenderFemale,
+// 		Email: "camila@email.com",
+// 	}
+// 	personInMemory = append(personInMemory, thisPerson)
+// 	inJSON, err = json.Marshal(thisPerson)
+// 	if err != nil {
+// 		fmt.Print(err)
+// 	}
+// 	fmt.Println("JSON: ", string(inJSON))
+
+// 	fmt.Println("personInMemory: ", len(personInMemory))
+// }
 
 func NewPersonInMemoryRepository() PersonRepository {
 	return &person{}

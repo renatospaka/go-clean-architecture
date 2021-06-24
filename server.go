@@ -23,6 +23,7 @@ func main() {
 	})
 
 	httpRouter.GET("/person/{id}", personController.GetPerson)
+	httpRouter.POST("/person", personController.AddPerson)
 
 	httpRouter.SERVE(port)
 }

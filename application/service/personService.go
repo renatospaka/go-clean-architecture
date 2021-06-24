@@ -27,7 +27,7 @@ func NewPersonService() PersonService {
 func (*person) GetPerson(id string) (*entity.Person, error) {
 	thisGuy, err := repo.FindById(id)
 	if err != nil {
-		desc := "personrepository.getperson.error: failed to retrieve person\n" + err.Error()
+		desc := "personrepository.getperson.error: " + err.Error()
 		err2 := errors.New(desc)
 		return &entity.Person{}, err2
 	}
@@ -40,7 +40,7 @@ func (*person) GetPerson(id string) (*entity.Person, error) {
 func (*person) AddPerson(person *entity.Person) (*entity.Person, error) {
 	thisGuy, err := repo.Add(person)
 	if err != nil {
-		desc := "personrepository.add.error: failed to add this person\n" + err.Error()
+		desc := "personrepository.addperson.error: " + err.Error()
 		err2 := errors.New(desc)
 		return &entity.Person{}, err2
 	}

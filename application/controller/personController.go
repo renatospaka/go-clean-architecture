@@ -2,7 +2,7 @@ package controller
 
 import (
 	"encoding/json"
-	_ "fmt"
+	"fmt"
 	"net/http"
 
 	router "github.com/renatospaka/go-clean-architecture/application/http"
@@ -30,6 +30,7 @@ func NewPersonController() PersonController {
 	return &controller{}
 }
 
+//Get a person by ID. If ID is missing or not found, then an error is raised
 func (*controller) GetPerson(resp http.ResponseWriter, req *http.Request) {
 	personService := service.NewPersonService()
 
@@ -45,7 +46,8 @@ func (*controller) GetPerson(resp http.ResponseWriter, req *http.Request) {
 	person, err := personService.GetPerson(id)
 	if err != nil {
 		resp.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(resp).Encode(utils.ServiceError{Message: "Error getting the person"})
+		//json.NewEncoder(resp).Encode(utils.ServiceError{Message: "Error getting the person"})
+		json.NewEncoder(resp).Encode(utils.ServiceError{Message: err.Error()})
 		return
 	}
 
@@ -53,6 +55,8 @@ func (*controller) GetPerson(resp http.ResponseWriter, req *http.Request) {
 	json.NewEncoder(resp).Encode(person)
 }
 
+
+//Add a person. For now, just expecting JSON parse partial object based on struct Person
 func (*controller) AddPerson(resp http.ResponseWriter, req *http.Request) {
 	personService := service.NewPersonService()
 	var person entity.Person
@@ -61,7 +65,8 @@ func (*controller) AddPerson(resp http.ResponseWriter, req *http.Request) {
 	err := json.NewDecoder(req.Body).Decode(&person)
 	if err != nil {
 		resp.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(resp).Encode(utils.ServiceError{Message: "Error unmarshalling the person"})
+		//json.NewEncoder(resp).Encode(utils.ServiceError{Message: "Error unmarshalling the person"})
+		json.NewEncoder(resp).Encode(utils.ServiceError{Message: err.Error()})
 		return
 	}
 
