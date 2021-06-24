@@ -5,12 +5,14 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/renatospaka/go-clean-architecture/application/controller"
 	router "github.com/renatospaka/go-clean-architecture/application/http"
 )
 
 var (
 	//personRepo repository.PersonRepository = repository.NewPersonInMemoryRepository()
 	httpRouter router.Router = router.NewMuxRouter()
+	personController controller.PersonController = controller.NewPersonController()
 )
 
 func main() {
@@ -19,6 +21,8 @@ func main() {
 		log.Printf("EMR Server running on port %s", port)
 		fmt.Fprintln(w, "EMR Server running on port ", port)
 	})
+
+	httpRouter.GET("/person", personController.GetPerson)
 
 	httpRouter.SERVE(port)
 }
