@@ -2,7 +2,6 @@ package controller
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	router "github.com/renatospaka/go-clean-architecture/application/http"
