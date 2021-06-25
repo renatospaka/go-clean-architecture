@@ -15,7 +15,7 @@ type Neo4jSession struct {
 
 type db struct{}
 
-func NewNeo4jSession(accessMode neo4j.AccessMode) Neo4jSession {
+func NewNeo4jSessionRead() Neo4jSession {
 	var (
 		session          neo4j.Session
 		//thisNeo4jSession Neo4jSession = Neo4jSession{}
@@ -25,16 +25,26 @@ func NewNeo4jSession(accessMode neo4j.AccessMode) Neo4jSession {
 	if err != nil {
 		return Neo4jSession{}
 	}
-
-	// thisNeo4jSession.driver = driverSession
-	// err = isValidDriver(&thisNeo4jSession)
-	// if err != nil {
-	// 	return Neo4jSession{}
-	// }
 	
-	session = driverSession.NewSession(neo4j.SessionConfig{AccessMode: accessMode})
-	//thisNeo4jSession.Session = session
-	//return thisNeo4jSession
+	session = driverSession.NewSession(neo4j.SessionConfig{AccessMode: neo4j.AccessModeRead})
+	return Neo4jSession{
+		Session: session,
+		driver: driverSession,
+	}
+}
+
+func NewNeo4jSessionWrite() Neo4jSession {
+	var (
+		session          neo4j.Session
+		//thisNeo4jSession Neo4jSession = Neo4jSession{}
+	)
+
+	driverSession, err := connect()
+	if err != nil {
+		return Neo4jSession{}
+	}
+	
+	session = driverSession.NewSession(neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
 	return Neo4jSession{
 		Session: session,
 		driver: driverSession,

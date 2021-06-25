@@ -7,3 +7,8 @@ const (
 	ERROR_DB_MISSING_CONFIG_FILE string = "unable to locate .env file"
 	ERROR_DB_MISSING_CONNECTION  string = "connection to database missing"
 )
+
+// const (
+// 	AccessModeRead  int = 1
+// 	AccessModeWrite int = 0
+// )

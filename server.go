@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
+	//"github.com/neo4j/neo4j-go-driver/v4/neo4j"
 
 	"github.com/renatospaka/go-clean-architecture/application/controller"
 	router "github.com/renatospaka/go-clean-architecture/application/http"
@@ -16,7 +16,7 @@ var (
 	//personRepo repository.PersonRepository = repository.NewPersonInMemoryRepository()
 	httpRouter router.Router = router.NewMuxRouter()
 	personController controller.PersonController = controller.NewPersonController()
-	dbServer db.Neo4jSession = db.NewNeo4jSession(neo4j.AccessModeWrite)
+	dbServer db.Neo4jSession = db.NewNeo4jSessionRead()
 )
 
 func main() {
