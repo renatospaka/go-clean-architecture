@@ -1,21 +1,21 @@
 {
   "workbench.colorCustomizations": {
-    "activityBar.activeBackground": "#de69a5",
-    "activityBar.activeBorder": "#416817",
-    "activityBar.background": "#de69a5",
+    "activityBar.activeBackground": "#d0abd7",
+    "activityBar.activeBorder": "#82773e",
+    "activityBar.background": "#d0abd7",
     "activityBar.foreground": "#15202b",
     "activityBar.inactiveForeground": "#15202b99",
-    "activityBarBadge.background": "#416817",
+    "activityBarBadge.background": "#82773e",
     "activityBarBadge.foreground": "#e7e7e7",
-    "statusBar.background": "#d53f8c",
-    "statusBar.foreground": "#e7e7e7",
-    "statusBarItem.hoverBackground": "#de69a5",
-    "titleBar.activeBackground": "#d53f8c",
-    "titleBar.activeForeground": "#e7e7e7",
-    "titleBar.inactiveBackground": "#d53f8c99",
-    "titleBar.inactiveForeground": "#e7e7e799"
+    "statusBar.background": "#bd88c7",
+    "statusBar.foreground": "#15202b",
+    "statusBarItem.hoverBackground": "#aa65b7",
+    "titleBar.activeBackground": "#bd88c7",
+    "titleBar.activeForeground": "#15202b",
+    "titleBar.inactiveBackground": "#bd88c799",
+    "titleBar.inactiveForeground": "#15202b99"
   },
-  "peacock.remoteColor": "#d53f8c",
+  "peacock.remoteColor": "#bd88c7",
   "cSpell.words": [
     "Spakauskas",
     "godotenv"

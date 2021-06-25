@@ -7,8 +7,8 @@ const (
 )
 
 const (
-	Self    string = "self"
-	Someone string = "someone"
+	Self    string = "Self"
+	Someone string = "Someone"
 )
 
 const (

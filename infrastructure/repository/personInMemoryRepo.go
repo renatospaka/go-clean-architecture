@@ -9,63 +9,27 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
-type person struct{}
+type personInMemory struct{}
 
 var (
-	personInMemory []entity.Person
+	personInMemoryDb []entity.Person
 )
 
-// func init() {
-// 	thisPerson := entity.Person{
-// 		ID: "1",
-// 		Name: "Renato",
-// 		MiddleName: "Costa",
-// 		LastName: "Spakauskas",
-// 		DOB: time.Date(1970, 11, 14, 0, 0, 0, 0, time.UTC),
-// 		Gender: entity.GenderMale,
-// 		Email: "renato@email.com",
-// 	}
-// 	personInMemory = append(personInMemory, thisPerson)
-// 	inJSON, err := json.Marshal(thisPerson)
-// 	if err != nil {
-// 		fmt.Print(err)
-// 	}
-// 	fmt.Println("JSON: ", string(inJSON))
-
-// 	thisPerson = entity.Person{
-// 		ID: "2",
-// 		Name: "Camila",
-// 		MiddleName: "Pinho",
-// 		LastName: "Spakauskas",
-// 		DOB: time.Date(1995, 2, 6, 0, 0, 0, 0, time.UTC),
-// 		Gender: entity.GenderFemale,
-// 		Email: "camila@email.com",
-// 	}
-// 	personInMemory = append(personInMemory, thisPerson)
-// 	inJSON, err = json.Marshal(thisPerson)
-// 	if err != nil {
-// 		fmt.Print(err)
-// 	}
-// 	fmt.Println("JSON: ", string(inJSON))
-
-// 	fmt.Println("personInMemory: ", len(personInMemory))
-// }
-
 func NewPersonInMemoryRepository() PersonRepository {
-	return &person{}
+	return &personInMemory{}
 }
 
-func (*person) FindById(id string) (*entity.Person, error) {
-	if len(personInMemory) == 0 {
+func (*personInMemory) FindById(id string) (*entity.Person, error) {
+	if len(personInMemoryDb) == 0 {
 		err := errors.New(entity.ERROR_PERSON_BASE_EMPTY)
 		log.Printf("person.findbyid.error: %v", err)
 		return &entity.Person{}, err
 	}
 
 	thisGuy := entity.Person{}
-	for idx, value := range personInMemory {
+	for idx, value := range personInMemoryDb {
 		if value.ID == id {
-			thisGuy = personInMemory[idx]
+			thisGuy = personInMemoryDb[idx]
 			break
 		}
 	} 
@@ -79,18 +43,18 @@ func (*person) FindById(id string) (*entity.Person, error) {
 	return &thisGuy, nil
 }
 
-func (*person) Add(person *entity.Person) (*entity.Person, error) {
-	err := person.IsValid()
+func (*personInMemory) Add(newPerson *entity.Person) (*entity.Person, error) {
+	err := newPerson.IsValid()
 	if err != nil {
 		log.Printf("person.add.error: %v", err)
 		return &entity.Person{}, err
 	}
 
-	person.ID = uuid.NewV4().String()
-	person.Responsible = entity.Someone
-	person.CreatedAt = time.Now()
-	person.UpdatedAt = time.Now()
+	newPerson.ID = uuid.NewV4().String()
+	newPerson.Responsible = entity.Someone
+	newPerson.CreatedAt = time.Now()
+	newPerson.UpdatedAt = time.Now()
 
-	personInMemory = append(personInMemory, *person)
-	return person, nil
+	personInMemoryDb = append(personInMemoryDb, *newPerson)
+	return newPerson, nil
 }
