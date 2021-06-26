@@ -2,13 +2,15 @@ package repository
 
 import (
 	"errors"
+	"fmt"
 	"log"
 	"time"
 
-	//_ "github.com/neo4j/neo4j-go-driver/neo4j"
+	"github.com/neo4j/neo4j-go-driver/v4/neo4j/dbtype"
 	"github.com/renatospaka/go-clean-architecture/entity"
 	"github.com/renatospaka/go-clean-architecture/framework/db"
-	"github.com/renatospaka/go-clean-architecture/framework/utils"
+
+	//"github.com/renatospaka/go-clean-architecture/framework/utils"
 	uuid "github.com/satori/go.uuid"
 )
 
@@ -24,6 +26,7 @@ func NewPersonNeo4jRepository() PersonRepository {
 }
 
 func (*personNeo4j) FindById(id string) (*entity.Person, error) {
+	thisGuy := entity.Person{}
 	personNeo4jDb := db.NewNeo4jSessionWrite()
 	err := personNeo4jDb.IsValid()
 	if err != nil {
@@ -41,13 +44,15 @@ func (*personNeo4j) FindById(id string) (*entity.Person, error) {
 		return &entity.Person{}, err
 	}
 	defer tx.Close()
-	
+
 	//cypher := "CREATE (a:Greeting) SET a.message = $message RETURN a.message + ', from node ' + id(a)"
-	cypher := "MATCH (p:Person {uuid: $uuid}) " +
-						"RETURN p.uuid As uuid, p.name AS name, p.middleName AS middleName, p.lastName AS lastName, p.gender AS gender, p.email AS email"
+	cypher := "MATCH (one:Person {uuid: $uuid}) " +
+		"WITH one " +
+		"MATCH (one)-[:BIRTH]->(dob:Day) " +
+		"RETURN one.uuid As uuid, one.name AS name, one.middleName AS middleName, one.lastName AS lastName, one.gender AS gender, one.email AS email, dob.date AS dob "
 	params := map[string]interface{}{
-									"uuid": id,
-								}
+		"uuid": id,
+	}
 	result, err := tx.Run(cypher, params)
 	if err != nil {
 		log.Printf("person.findbyid.Run.error: %v", err)
@@ -57,26 +62,40 @@ func (*personNeo4j) FindById(id string) (*entity.Person, error) {
 		}
 		return &entity.Person{}, err
 	}
-	
-	// if result.Next() {
-	record, err := result.Single()
-	if err != nil {
-		log.Printf("person.findbyid.result.Single.error: %v", err)
-		err2 := tx.Rollback()
-		if err2 != nil {
-			log.Printf("person.findbyid.result.Single.Rollback.error: %v", err2)
-		}
-		return &entity.Person{}, err
-	}
 
-	thisGuy := entity.Person{
-		ID: utils.IsNilString(record.Values[0]),
-		Name: utils.IsNilString(record.Values[1]),
-		MiddleName: utils.IsNilString(record.Values[2]),
-		LastName: utils.IsNilString(record.Values[3]),
-		Email: utils.IsNilString(record.Values[4]),
-		Gender: utils.IsNilString(record.Values[5]),
-		DOB: utils.IsNilTime(time.Time{}),
+	for result.Next() {
+		var dob2 dbtype.Date
+		record := result.Record()
+		uuid, ok := record.Get("uuid")
+		name, ok := record.Get("name")
+		middleName, ok := record.Get("middleName")
+		lastName, ok := record.Get("lastName")
+		email, ok := record.Get("email")
+		if !ok || email == nil {
+			email = ""
+		}
+		gender, ok := record.Get("gender")
+		if !ok || gender == nil {
+			gender = ""
+		}
+
+		dob, ok := record.Get("dob")
+		if dob != nil {
+			dob2 = dob.(dbtype.Date)
+		}
+		if !ok || dob == nil {
+			dob2 = dbtype.Date{}
+		}
+
+		thisGuy = entity.Person{
+			ID:         uuid.(string),
+			Name:       name.(string),
+			MiddleName: middleName.(string),
+			LastName:   lastName.(string),
+			Email:      email.(string),
+			Gender:     gender.(string),
+			DOB:        time.Time(dob2),	// that gave me 2 entire days of a huge headache
+		}
 	}
 
 	if thisGuy.ID == "" {
