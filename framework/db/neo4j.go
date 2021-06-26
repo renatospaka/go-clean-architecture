@@ -56,7 +56,6 @@ func (d *Neo4jSession) IsValid() error {
 	return isValidDriver(d)
 }
 
-
 func connect() (neo4j.Driver, error) {
 	err := godotenv.Load()
 	if err != nil {

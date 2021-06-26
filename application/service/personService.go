@@ -16,7 +16,8 @@ type PersonService interface {
 
 type person struct{}
 
-var repo repository.PersonRepository = repository.NewPersonInMemoryRepository()
+//var repo repository.PersonRepository = repository.NewPersonInMemoryRepository()
+var repo repository.PersonRepository = repository.NewPersonNeo4jRepository()
 
 func NewPersonService() PersonService {
 	return &person{}
