@@ -1,10 +1,11 @@
-package http
+package router
 
 import (
 	"log"
 	"net/http"
 
 	"github.com/go-chi/chi"
+	//router "github.com/renatospaka/go-clean-architecture/infrastructure/http"
 )
 
 type chiRouter struct {}

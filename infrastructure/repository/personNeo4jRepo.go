@@ -7,18 +7,17 @@ import (
 	"time"
 
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j/dbtype"
-	"github.com/renatospaka/go-clean-architecture/entity"
-	"github.com/renatospaka/go-clean-architecture/framework/db"
-
-	//"github.com/renatospaka/go-clean-architecture/framework/utils"
 	uuid "github.com/satori/go.uuid"
+
+	"github.com/renatospaka/go-clean-architecture/entity"
+	"github.com/renatospaka/go-clean-architecture/infrastructure/db"
 )
 
 type personNeo4j struct{}
 
 var (
 	personNeo4jDbArray []entity.Person
-	//personNeo4jDb db.Neo4jSession = db.NewNeo4jSessionWrite()
+	personNeo4jDb db.Neo4jSession //= db.NewNeo4jSessionWrite()
 )
 
 func NewPersonNeo4jRepository() PersonRepository {
@@ -26,43 +25,40 @@ func NewPersonNeo4jRepository() PersonRepository {
 }
 
 func (*personNeo4j) FindById(id string) (*entity.Person, error) {
-	thisGuy := entity.Person{}
-	personNeo4jDb := db.NewNeo4jSessionWrite()
-	err := personNeo4jDb.IsValid()
-	if err != nil {
+	personNeo4jDb = db.NewNeo4jSession()
+	if err := personNeo4jDb.Connect(db.AccessRead); err != nil {
+		log.Printf("person.FindById.Connect.error: %v", err)
+		return &entity.Person{}, err
+	}
+
+	if err := personNeo4jDb.IsValid(); err != nil {
+		log.Printf("person.FindById.IsValid.error: %v", err)
 		return &entity.Person{}, err
 	}
 	defer personNeo4jDb.Session.Close()
-
+	
 	tx, err := personNeo4jDb.Session.BeginTransaction()
 	if err != nil {
-		log.Printf("person.findbyid.BeginTransaction.error: %v", err)
-		err2 := tx.Rollback()
-		if err2 != nil {
-			log.Printf("person.findbyid.result.Single.Rollback.error: %v", err2)
-		}
+		log.Printf("person.FindById.BeginTransaction.error: %v", err)
 		return &entity.Person{}, err
 	}
-	defer tx.Close()
-
-	//cypher := "CREATE (a:Greeting) SET a.message = $message RETURN a.message + ', from node ' + id(a)"
+	defer tx.Rollback()
+	
 	cypher := "MATCH (one:Person {uuid: $uuid}) " +
-		"WITH one " +
-		"MATCH (one)-[:BIRTH]->(dob:Day) " +
-		"RETURN one.uuid As uuid, one.name AS name, one.middleName AS middleName, one.lastName AS lastName, one.gender AS gender, one.email AS email, dob.date AS dob "
+						"WITH one " +
+						"MATCH (one)-[:BIRTH]->(dob:Day) " +
+						"RETURN one.uuid As uuid, one.name AS name, one.middleName AS middleName, one.lastName AS lastName, one.gender AS gender, one.email AS email, dob.date AS dob "
 	params := map[string]interface{}{
 		"uuid": id,
 	}
 	result, err := tx.Run(cypher, params)
 	if err != nil {
-		log.Printf("person.findbyid.Run.error: %v", err)
-		err2 := tx.Rollback()
-		if err2 != nil {
-			log.Printf("person.findbyid.result.Single.Rollback.error: %v", err2)
-		}
+		log.Printf("person.FindById.Run.error: %v", err)
 		return &entity.Person{}, err
 	}
-
+	
+	found := false
+	thisGuy := entity.Person{}
 	for result.Next() {
 		var dob2 dbtype.Date
 		record := result.Record()
@@ -78,15 +74,16 @@ func (*personNeo4j) FindById(id string) (*entity.Person, error) {
 		if !ok || gender == nil {
 			gender = ""
 		}
-
+		//here is a little tricky
 		dob, ok := record.Get("dob")
-		if dob != nil {
+		if dob != nil && ok {
 			dob2 = dob.(dbtype.Date)
 		}
-		if !ok || dob == nil {
-			dob2 = dbtype.Date{}
+		if !ok || dob == nil { 
+			dob2 = dbtype.Date{} 
 		}
 
+		found = true
 		thisGuy = entity.Person{
 			ID:         uuid.(string),
 			Name:       name.(string),
@@ -98,33 +95,44 @@ func (*personNeo4j) FindById(id string) (*entity.Person, error) {
 		}
 	}
 
-	if thisGuy.ID == "" {
+	if thisGuy.ID == "" || !found {
 		err := errors.New(entity.ERROR_PERSON_INVALID_ID)
-		log.Printf("person.findbyid.error: %v", err)
-		err2 := tx.Rollback()
-		if err2 != nil {
-			log.Printf("person.findbyid.result.Single.Rollback.error: %v", err2)
-		}
+		log.Printf("person.FindById.error: %v", err)
+		// err2 := tx.Rollback()
+		// if err2 != nil {
+		// 	log.Printf("person.FindById.result.Single.Rollback.error: %v", err2)
+		// }
 		return &entity.Person{}, err
 	}
 
-	tx.Commit()
-	tx.Close()
+	err = tx.Commit()
+	if err != nil {
+		log.Printf("person.FindById.Commit.error: %v", err)
+		return &entity.Person{}, err
+	}
+
+	err = tx.Close()
+	if err != nil {
+		log.Printf("person.FindById.Close.error: %v", err)
+		return &entity.Person{}, err
+	}
+
 	personNeo4jDb.Session.Close()
 	return &thisGuy, nil
 }
 
-func (*personNeo4j) Add(newPerson *entity.Person) (*entity.Person, error) {
-	err := newPerson.IsValid()
+//Add a new person and link him/her to the proper family
+func (*personNeo4j) Add(person *entity.Person) (*entity.Person, error) {
+	err := person.IsValid()
 	if err != nil {
 		log.Printf("person.add.error: %v", err)
 		return &entity.Person{}, err
 	}
 
-	newPerson.ID = uuid.NewV4().String()
-	newPerson.Responsible = entity.Someone
-	newPerson.CreatedAt = time.Now()
-	newPerson.UpdatedAt = time.Now()
+	person.ID = uuid.NewV4().String()
+	person.Responsible = entity.Someone
+	person.CreatedAt = time.Now()
+	person.UpdatedAt = time.Now()
 
-	return newPerson, nil
+	return person, nil
 }

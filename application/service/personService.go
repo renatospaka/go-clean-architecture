@@ -1,9 +1,7 @@
 package service
 
 import (
-	//"gopkg.in/multierror.v1"
-
-	"errors"
+	"log"
 
 	"github.com/renatospaka/go-clean-architecture/entity"
 	"github.com/renatospaka/go-clean-architecture/infrastructure/repository"
@@ -17,9 +15,10 @@ type PersonService interface {
 type person struct{}
 
 //var repo repository.PersonRepository = repository.NewPersonInMemoryRepository()
-var repo repository.PersonRepository = repository.NewPersonNeo4jRepository()
+var repo repository.PersonRepository //= repository.NewPersonNeo4jRepository()
 
 func NewPersonService() PersonService {
+	repo = repository.NewPersonNeo4jRepository()
 	return &person{}
 }
 
@@ -28,11 +27,12 @@ func NewPersonService() PersonService {
 func (*person) GetPerson(id string) (*entity.Person, error) {
 	thisGuy, err := repo.FindById(id)
 	if err != nil {
-		desc := "personrepository.getperson.error: " + err.Error()
-		err2 := errors.New(desc)
-		return &entity.Person{}, err2
+		log.Printf("personController.GetPerson.error: %v", err.Error())
+		// desc := "personController.GetPerson.error: " + err.Error()
+		// err2 := errors.New(desc)
+		return &entity.Person{}, err
 	}
-
+	
 	return thisGuy, nil
 }
 
@@ -41,9 +41,9 @@ func (*person) GetPerson(id string) (*entity.Person, error) {
 func (*person) AddPerson(person *entity.Person) (*entity.Person, error) {
 	thisGuy, err := repo.Add(person)
 	if err != nil {
-		desc := "personrepository.addperson.error: " + err.Error()
-		err2 := errors.New(desc)
-		return &entity.Person{}, err2
+		// desc := "personController.AddPerson.error: " + err.Error()
+		// // err2 := errors.New(desc)
+		return &entity.Person{}, err
 	}
 	return thisGuy, nil
 }

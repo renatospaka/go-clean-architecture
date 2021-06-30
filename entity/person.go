@@ -5,7 +5,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/renatospaka/go-clean-architecture/framework/utils"
+	"github.com/renatospaka/go-clean-architecture/infrastructure/utils"
 )
 
 type Person struct {

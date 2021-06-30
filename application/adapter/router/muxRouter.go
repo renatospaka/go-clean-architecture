@@ -1,11 +1,12 @@
-package http
+package router
 
 import (
 	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
-	//"github.com/neo4j/neo4j-go-driver/v4/neo4j/internal/router"
+	//router "github.com/renatospaka/go-clean-architecture/infrastructure/http"
+	"github.com/renatospaka/go-clean-architecture/infrastructure/utils"
 )
 
 type muxRouter struct{}
@@ -34,7 +35,7 @@ func (*muxRouter) GetParam(r *http.Request, param string) string {
 	thisParam, ok := vars[param]
 	if !ok {
 		//err := "The parameter " + param + " does not exist"
-		err := ERROR_MISSING_OR_NOT_FOUND_PARAMETER
+		err := utils.ERROR_PARAMETER_NOT_FOUND
 		return err
 	}
 	return thisParam

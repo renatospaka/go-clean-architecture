@@ -1,0 +1,14 @@
+\infrastructure
+  \db
+  \repository
+  \http
+  \utils
+\application
+  \adapter
+    \router
+  \controller
+  \service
+\core
+  \entity
+  \repository
+

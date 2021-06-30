@@ -1,4 +1,4 @@
-package http
+package router
 
 import "net/http"
 
@@ -8,7 +8,3 @@ type Router interface {
 	SERVE(port string)
 	GetParam(r *http.Request, param string) string
 }
-
-const (
-	ERROR_MISSING_OR_NOT_FOUND_PARAMETER string = "parameter provided does not exist"
-)

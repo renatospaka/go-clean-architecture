@@ -4,10 +4,10 @@ import (
 	"encoding/json"
 	"net/http"
 
-	router "github.com/renatospaka/go-clean-architecture/application/http"
+	"github.com/renatospaka/go-clean-architecture/application/adapter/router"
 	"github.com/renatospaka/go-clean-architecture/application/service"
 	"github.com/renatospaka/go-clean-architecture/entity"
-	"github.com/renatospaka/go-clean-architecture/framework/utils"
+	"github.com/renatospaka/go-clean-architecture/infrastructure/utils"
 )
 
 type PersonController interface {
@@ -36,7 +36,7 @@ func (*controller) GetPerson(resp http.ResponseWriter, req *http.Request) {
 	resp.Header().Set("Content-Type", "application/json")
 
 	id := httpRouter.GetParam(req, "id")
-	if id == router.ERROR_MISSING_OR_NOT_FOUND_PARAMETER {
+	if id == utils.ERROR_MISSING_PARAMETER{
 		resp.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(resp).Encode(utils.ServiceError{Message: "Person id is missing"})
 		return
@@ -45,7 +45,6 @@ func (*controller) GetPerson(resp http.ResponseWriter, req *http.Request) {
 	person, err := personService.GetPerson(id)
 	if err != nil {
 		resp.WriteHeader(http.StatusInternalServerError)
-		//json.NewEncoder(resp).Encode(utils.ServiceError{Message: "Error getting the person"})
 		json.NewEncoder(resp).Encode(utils.ServiceError{Message: err.Error()})
 		return
 	}
@@ -64,7 +63,6 @@ func (*controller) AddPerson(resp http.ResponseWriter, req *http.Request) {
 	err := json.NewDecoder(req.Body).Decode(&person)
 	if err != nil {
 		resp.WriteHeader(http.StatusInternalServerError)
-		//json.NewEncoder(resp).Encode(utils.ServiceError{Message: "Error unmarshalling the person"})
 		json.NewEncoder(resp).Encode(utils.ServiceError{Message: err.Error()})
 		return
 	}

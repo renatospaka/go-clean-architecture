@@ -5,27 +5,16 @@ import (
 	"log"
 	"net/http"
 
-	//"github.com/neo4j/neo4j-go-driver/v4/neo4j"
-
 	"github.com/renatospaka/go-clean-architecture/application/controller"
-	router "github.com/renatospaka/go-clean-architecture/application/http"
-	"github.com/renatospaka/go-clean-architecture/framework/db"
+	"github.com/renatospaka/go-clean-architecture/application/adapter/router"
 )
 
 var (
-	//personRepo repository.PersonRepository = repository.NewPersonInMemoryRepository()
 	httpRouter router.Router = router.NewMuxRouter()
 	personController controller.PersonController = controller.NewPersonController()
-	dbServer db.Neo4jSession = db.NewNeo4jSessionRead()
 )
 
 func main() {
-	//database server
-	err := dbServer.IsValid()
-	if err != nil {
-		log.Println("Could not connect to database server due to", err.Error())
-	}
-
 	//http server
 	const port = ":8000"
 	httpRouter.GET("/", func(w http.ResponseWriter, r *http.Request) {

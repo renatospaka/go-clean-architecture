@@ -8,7 +8,7 @@ const (
 	ERROR_DB_MISSING_CONNECTION  string = "connection to database missing"
 )
 
-// const (
-// 	AccessModeRead  int = 1
-// 	AccessModeWrite int = 0
-// )
+const (
+	AccessRead  int = 1
+	AccessWrite int = 0
+)
