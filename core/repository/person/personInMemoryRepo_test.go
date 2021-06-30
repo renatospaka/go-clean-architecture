@@ -4,8 +4,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/renatospaka/go-clean-architecture/entity/person"
-	"github.com/renatospaka/go-clean-architecture/infrastructure/repository/person"
+	"github.com/renatospaka/go-clean-architecture/core/entity/person"
+	"github.com/renatospaka/go-clean-architecture/core/repository/person"
 	"github.com/stretchr/testify/assert"
 )
 

@@ -6,6 +6,7 @@ const (
 	ERROR_DB_UNABLE_2_CONNECT    string = "unable to connect to database server"
 	ERROR_DB_MISSING_CONFIG_FILE string = "unable to locate .env file"
 	ERROR_DB_MISSING_CONNECTION  string = "connection to database missing"
+	ERROR_DB_NOT_CONNECTED       string = "not connected to database"
 )
 
 const (
