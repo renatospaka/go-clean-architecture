@@ -23,16 +23,16 @@ type controller struct{}
 
 var (
 	httpRouter router.Router = router.NewMuxRouter()
+	personService service.PersonService
 )
 
-func NewPersonController() PersonController {
+func NewPersonController(service service.PersonService) PersonController {
+	personService = service 
 	return &controller{}
 }
 
 //Get a person by ID. If ID is missing or not found, then an error is raised
 func (*controller) GetPerson(resp http.ResponseWriter, req *http.Request) {
-	personService := service.NewPersonService()
-
 	resp.Header().Set("Content-Type", "application/json")
 
 	id := httpRouter.GetParam(req, "id")
@@ -56,7 +56,7 @@ func (*controller) GetPerson(resp http.ResponseWriter, req *http.Request) {
 
 //Add a person. For now, just expecting JSON parse partial object based on struct Person
 func (*controller) AddPerson(resp http.ResponseWriter, req *http.Request) {
-	personService := service.NewPersonService()
+	//personService := service.NewPersonService()
 	var person entity.Person
 
 	resp.Header().Set("Content-Type", "application/json")

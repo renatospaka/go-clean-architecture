@@ -5,13 +5,17 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/renatospaka/go-clean-architecture/application/controller"
 	"github.com/renatospaka/go-clean-architecture/application/adapter/router"
+	"github.com/renatospaka/go-clean-architecture/application/controller"
+	"github.com/renatospaka/go-clean-architecture/application/service"
+	repository "github.com/renatospaka/go-clean-architecture/core/repository/person"
 )
 
 var (
+	postRepository repository.PersonRepository = repository.NewPersonNeo4jRepository()
+	personService service.PersonService = service.NewPersonService(postRepository)
+	personController controller.PersonController = controller.NewPersonController(personService)
 	httpRouter router.Router = router.NewMuxRouter()
-	personController controller.PersonController = controller.NewPersonController()
 )
 
 func main() {

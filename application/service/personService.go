@@ -14,18 +14,19 @@ type PersonService interface {
 
 type person struct{}
 
-//var repo repository.PersonRepository = repository.NewPersonInMemoryRepository()
-var repo repository.PersonRepository //= repository.NewPersonNeo4jRepository()
+var( 
+	personRepo repository.PersonRepository
+) 
 
-func NewPersonService() PersonService {
-	repo = repository.NewPersonNeo4jRepository()
+func NewPersonService(repository repository.PersonRepository) PersonService {
+	personRepo = repository 
 	return &person{}
 }
 
 
 //Get one person identified by his/her ID
 func (*person) GetPerson(id string) (*entity.Person, error) {
-	thisGuy, err := repo.FindById(id)
+	thisGuy, err := personRepo.FindById(id)
 	if err != nil {
 		log.Printf("personController.GetPerson.error: %v", err.Error())
 		// desc := "personController.GetPerson.error: " + err.Error()
@@ -39,7 +40,7 @@ func (*person) GetPerson(id string) (*entity.Person, error) {
 
 //add a new person who later can be a patient, a responsible for someone, a medic
 func (*person) AddPerson(person *entity.Person) (*entity.Person, error) {
-	thisGuy, err := repo.Add(person)
+	thisGuy, err := personRepo.Add(person)
 	if err != nil {
 		// desc := "personController.AddPerson.error: " + err.Error()
 		// // err2 := errors.New(desc)
