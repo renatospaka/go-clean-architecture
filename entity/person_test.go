@@ -80,7 +80,7 @@ func TestPerson_EmailInvalid(t *testing.T) {
 	err = person.IsValid()
 	require.EqualError(t, err, entity.ERROR_EMAIL_INVALID)
 
-	person.Responsible = ""
+	person.Responsible = ""	//don not need to provide an email
 	person.Email = ""
 	err = person.IsValid()
 	require.Nil(t, err)
@@ -114,11 +114,11 @@ func TestPerson_DOBInvalid(t *testing.T) {
 	err = person.IsValid()
 	require.EqualError(t, err, entity.ERROR_DOB_INVALID)
 
-	person.DOB = time.Now().AddDate(0, 0, 1) //amanhã
+	person.DOB = time.Now().AddDate(0, 0, 1) //tomorrow
 	err = person.IsValid()
 	require.EqualError(t, err, entity.ERROR_DOB_INVALID)
 
-	person.DOB = time.Now().AddDate(-5, 3, -12) //5 anos antes
+	person.DOB = time.Now().AddDate(-5, 3, -12) //5 years before
 	err = person.IsValid()
 	require.Nil(t, err)
 }

@@ -3,6 +3,7 @@ module github.com/renatospaka/go-clean-architecture
 go 1.16
 
 require (
+	github.com/asaskevich/govalidator v0.0.0-20210307081110-f21760c49a8d // indirect
 	github.com/go-chi/chi v1.5.4
 	github.com/gorilla/mux v1.8.0
 	github.com/joho/godotenv v1.3.0
