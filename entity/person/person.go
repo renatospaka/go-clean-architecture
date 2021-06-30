@@ -3,6 +3,7 @@ package entity
 import (
 	"errors"
 	"time"
+	
 
 	"github.com/asaskevich/govalidator"
 
@@ -10,18 +11,18 @@ import (
 )
 
 type Person struct {
-	ID          string    `json: "person_id" valid:"uuid,optional"`
-	Name        string    `json: "name" valid:"alpha,required,stringlength(3|30)"`
-	MiddleName  string    `json: "middle_name" valid:"alpha,optional"`
-	LastName    string    `json: "last_name" valid:"alpha,required,stringlength(3|30)"`
-	Email       string    `json: "email" valid:"email,required"`
-	Gender      string    `json: "gender" valid:"alpha,optional"`
-	DOB         time.Time `json: "day_of_birth" valid:"-"`
-	AgeInMonths int       `json: "age_in_months" valid:"-"`
-	Age         int       `json: "age" valid:"-"`
-	Responsible string    `json: "responsible_id" valid:"-"`
-	CreatedAt   time.Time `json: "created_at" valid:"-"`
-	UpdatedAt   time.Time `json: "updated_at" valid:"-"`
+	ID          string    `json:"person_id" valid:"uuid,optional"`
+	Name        string    `json:"name" valid:"alpha,required,stringlength(3|30)"`
+	MiddleName  string    `json:"middle_name" valid:"alpha, optional"`
+	LastName    string    `json:"last_name" valid:"alpha,required,stringlength(3|30)"`
+	Email       string    `json:"email" valid:"email,required"`
+	Gender      string    `json:"gender" valid:"alpha,optional"`
+	DOB         time.Time `json:"day_of_birth" valid:"-"`
+	AgeInMonths int       `json:"age_in_months" valid:"-"`
+	Age         int       `json:"age" valid:"-"`
+	Responsible string    `json:"responsible_id" valid:"-"`
+	CreatedAt   time.Time `json:"created_at" valid:"-"`
+	UpdatedAt   time.Time `json:"updated_at" valid:"-"`
 }
 
 type person struct{}

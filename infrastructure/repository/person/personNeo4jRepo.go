@@ -8,7 +8,7 @@ import (
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j/dbtype"
 	uuid "github.com/satori/go.uuid"
 
-	"github.com/renatospaka/go-clean-architecture/entity"
+	"github.com/renatospaka/go-clean-architecture/entity/person"
 	"github.com/renatospaka/go-clean-architecture/infrastructure/db"
 )
 

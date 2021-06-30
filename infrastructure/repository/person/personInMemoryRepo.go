@@ -5,7 +5,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/renatospaka/go-clean-architecture/entity"
+	"github.com/renatospaka/go-clean-architecture/entity/person"
 	uuid "github.com/satori/go.uuid"
 )
 

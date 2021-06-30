@@ -3,8 +3,8 @@ package service
 import (
 	"log"
 
-	"github.com/renatospaka/go-clean-architecture/entity"
-	"github.com/renatospaka/go-clean-architecture/infrastructure/repository"
+	"github.com/renatospaka/go-clean-architecture/entity/person"
+	"github.com/renatospaka/go-clean-architecture/infrastructure/repository/person"
 )
 
 type PersonService interface {

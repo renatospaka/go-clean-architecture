@@ -6,7 +6,7 @@ import (
 
 	"github.com/renatospaka/go-clean-architecture/application/adapter/router"
 	"github.com/renatospaka/go-clean-architecture/application/service"
-	"github.com/renatospaka/go-clean-architecture/entity"
+	"github.com/renatospaka/go-clean-architecture/entity/person"
 	"github.com/renatospaka/go-clean-architecture/infrastructure/utils"
 )
 
