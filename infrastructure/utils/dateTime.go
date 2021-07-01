@@ -8,8 +8,8 @@ const (
 	LayoutISO     = "2006-01-02"
 	LayoutUS      = "January 2, 2006"
 	LayoutShort   = "Jan-02-06"
-	LayoutBR      = "January 02, 2006"
-	LayoutBRShort = "01/Jan/2006"
+	LayoutBR      = "02/Jan/2006"
+	LayoutBRShort = "02/01/2006"
 )
 
 func IsDateEqualToday(d time.Time) bool {
